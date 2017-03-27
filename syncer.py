@@ -123,6 +123,19 @@ def remote_dir(path, host):
         subprocess.call(['ssh', host, 'mkdir -p ' + pipes.quote(path)])
 
 
+# Destination path
+def dst():
+    dir_str = source_dst()[1]
+    index_split = dir_str.index("@")
+    middle_dir_str = dir_str[index_split + 1:]
+    if ":" in middle_dir_str:
+        final_dir_str = dir_str
+    else:
+        extra_args = super_funk()["extra_args"]
+        final_dir_str = dir_str + ":" + extra_args[0]
+    return final_dir_str
+
+
 # Start rsync
 def rsync(keys, source, destination):
     subprocess.call(["rsync", keys, source, destination])
@@ -132,4 +145,4 @@ def rsync(keys, source, destination):
 if __name__ == "__main__":
     check_ping(parse_ip())
     remote_dir(parse_dir(), parse_host())
-    rsync(concat_keys(), source_dst()[0], source_dst()[1])
+    rsync(concat_keys(), source_dst()[0], dst())
