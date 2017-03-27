@@ -4,7 +4,7 @@
 Our course project.
 """
 
-import argparse, subprocess, sys, os, pipes
+import argparse, subprocess, sys, os, pipes, pexpect
 
 
 # Парсит вводимые аргументы
@@ -99,6 +99,7 @@ def parse_dir():
         final_dir_str = extra_args[0]
     return final_dir_str
 
+
 # Host for check_dir func
 def parse_host():
     dir_str = source_dst()[1]
@@ -108,6 +109,7 @@ def parse_host():
     else:
         final_host = dir_str
     return final_host
+
 
 # Check dir
 def is_dir_present(path, host):
@@ -121,7 +123,13 @@ def remote_dir(path, host):
         subprocess.call(['ssh', host, 'mkdir -p ' + pipes.quote(path)])
 
 
+# Start rsync
+def rsync(keys, source, destination):
+    subprocess.call(["rsync", keys, source, destination])
+
+
 # При запуске из консоли выполняет следующие функции
 if __name__ == "__main__":
     check_ping(parse_ip())
     remote_dir(parse_dir(), parse_host())
+    rsync(concat_keys(), source_dst()[0], source_dst()[1])
