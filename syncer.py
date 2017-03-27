@@ -1,4 +1,4 @@
-#!C:\Python27\python.exe
+#!/usr/bin/python
 # _*_ coding:utf-8 _*_
 """
 Our course project.
