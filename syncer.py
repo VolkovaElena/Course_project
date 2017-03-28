@@ -4,7 +4,7 @@
 Our course project.
 """
 
-import argparse, subprocess, sys, os, pipes, pexpect
+import argparse, subprocess, sys, os, pipes
 
 
 # Парсит вводимые аргументы
@@ -65,13 +65,20 @@ def source_dst():
 # Забирает только IP адрес удаленной машины
 def parse_ip():
     ip_str = source_dst()[1]
-    index_split = ip_str.index("@")
-    middle_ip_str = ip_str[index_split + 1:]
-    if ":" in middle_ip_str:
-        index_final_split = middle_ip_str.index(":")
-        final_ip_str = middle_ip_str[:index_final_split]
+    if "@" in ip_str:
+        index_split = ip_str.index("@")
+        middle_ip_str = ip_str[index_split + 1:]
+        if ":" in middle_ip_str:
+            index_final_split = middle_ip_str.index(":")
+            final_ip_str = middle_ip_str[:index_final_split]
+        else:
+            final_ip_str = middle_ip_str
     else:
-        final_ip_str = middle_ip_str
+        if ":" in ip_str:
+            index_colon = ip_str.index(":")
+            final_ip_str = ip_str[:index_colon]
+        else:
+            final_ip_str = ip_str
     return final_ip_str
 
 
