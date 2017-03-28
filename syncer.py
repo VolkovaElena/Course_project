@@ -75,7 +75,7 @@ def parse_ip():
     return final_ip_str
 
 
-# Пингует удаленную машину
+# Пингует удаленную машинуfg
 def check_ping(hostname):
     response = subprocess.call(['ping', '-c', '3', hostname], stdout=open(os.devnull, 'wb'))
 
