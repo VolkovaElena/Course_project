@@ -4,7 +4,11 @@
 Our course project.
 """
 
-import argparse, subprocess, sys, os, pipes
+import argparse
+import subprocess
+import sys
+import os
+import pipes
 
 
 # Парсит вводимые аргументы
@@ -31,19 +35,12 @@ def concat_keys():
     key_e = super_funk()["e"]
     keys = []
     for _ in super_funk().values():
-        if _ in list("PSvaqiz"):
+        if _ in "PSvaqiz":
             keys.append(_)
-
-    if keys:
-        keys = "".join(["-"] + keys)
-    else:
-        keys = ""
-
+    keys = "".join(["-"] + keys) if keys else ""
     if key_e is not None:
-        key_with_e = keys + (" -e {}".format(key_e[0]))
-    else:
-        key_with_e = keys
-    return key_with_e
+        return keys + (" -e {}".format(key_e[0]))
+    return keys
 
 
 # Все что не содержит "@" относит к источнику данных, остальное к пункту назначения данных
@@ -72,13 +69,13 @@ def parse_ip():
             index_final_split = middle_ip_str.index(":")
             final_ip_str = middle_ip_str[:index_final_split]
         else:
-            final_ip_str = middle_ip_str
+            return middle_ip_str
     else:
         if ":" in ip_str:
             index_colon = ip_str.index(":")
             final_ip_str = ip_str[:index_colon]
         else:
-            final_ip_str = ip_str
+            return ip_str
     return final_ip_str
 
 
@@ -125,7 +122,7 @@ def is_dir_present(path, host):
 
 
 # Main func
-def remote_dir(path, host):
+def create_remote_dir(path, host):
     if is_dir_present(path, host) == 1:
         subprocess.call(['ssh', host, 'mkdir -p ' + pipes.quote(path)])
 
