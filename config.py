@@ -1,4 +1,4 @@
-#!C:\Python27\python.exe
+#!/usr/bin/python
 # _*_ coding:utf-8 _*_
 """
 Config 
@@ -15,17 +15,18 @@ class Config(object):
     # Main function
     @classmethod
     def main(cls):
-        if Config.check_os():
-            if Config.check_python():
-                pass
-        else:
-            sys.exit(1)
+        if Config.check_python():
+            if Config.check_os():
+                Config.check_apps()
+            else:
+                sys.exit(1)
 
     # Checking system version
     @staticmethod
     def check_os():
         if platform.system() == "Linux":
-            return True
+            dist = platform.dist()
+            return True, dist[0]
         else:
             print("You use the {} operating system to run the script, you must use Linux.".format(platform.system()))
             return False
@@ -38,7 +39,15 @@ class Config(object):
             return True
         else:
             print("Yoy are using Python version {}, please use Python version 2.".format(sys.version_info.major))
-            return False
+            return True
+
+
+
+    # Checking installed apps
+    @staticmethod
+    def check_apps():
+        os_type = Config.check_os()[1]
+        print(os_type)
 
 
 Config.main()
